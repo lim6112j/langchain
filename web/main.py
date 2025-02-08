@@ -9,7 +9,7 @@ from langchain_core.documents import Document
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 url = "https://namu.wiki/w/%EC%94%A8%EC%97%98%EB%AA%A8%EB%B9%8C%EB%A6%AC%ED%8B%B0"
-question = "씨엘모빌리티의 경쟁력에 대해 얘기해줘"
+question = "씨엘모빌리티의 경쟁력에 대해 한국어로 얘기해줘"
 loader = WebBaseLoader(url)
 docs = loader.load()
 # print(docs)
