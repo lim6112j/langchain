@@ -78,3 +78,14 @@ if prompt:
     st.write(web_result)
     # st.write(script)
     # st.write(wiki_research)
+
+    # import gmaps
+    # gmaps.configure(api_key='AIzaSyAQkoRaEefK8pUcmb8D46DNfGZwREwcUZ0')
+    # new_york = (40.75, -74.00)
+    # map = gmaps.figure(center=new_york, zoom_level=12)
+    # from ipywidgets import embed
+    # snippet = embed.embed_snippet(views=map)
+    # html = embed.html_template.format(title="", snippet=snippet)
+    #
+    # import streamlit.components.v1 as components
+    # components.html(html, height=500,width=500)
