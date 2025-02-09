@@ -2,12 +2,13 @@
 from langchain_ollama import OllamaLLM
 import streamlit as st
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
+from langchain.chains import LLMChain, APIChain
 from langchain.utilities import WikipediaAPIWrapper
 # Import things that are needed generically
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import tool
-
+from langchain.chains import LLMChain, LLMRequestsChain
+from langchain_core.prompts import PromptTemplate
 
 @tool
 def multiply(a: int, b: int) -> int:
@@ -44,17 +45,36 @@ script_template = PromptTemplate(
      this destination DESTINATION: {script}
       while leveraging this wikipedia research:{wikipedia_research}"""
 )
+
+web_request = """Between >>> and <<< are the raw response text from localhost.
+Extract the title or say "not found" if the information is not contained.
+Use the format
+Extracted:<title or "not found">
+>>> {requests_result} <<<
+Extracted:"""
+web_request_template = PromptTemplate(
+    input_variable=["query", "requests_result"],
+    template = web_request
+)
 llm = OllamaLLM(model="llama2")
 title_chain = LLMChain(llm=llm, prompt=title_template,
                        verbose=True, output_key='title')
 script_chain = LLMChain(llm=llm, prompt=script_template,
                         verbose=True, output_key='script')
 wiki = WikipediaAPIWrapper()
+web_request_chain = LLMRequestsChain(llm_chain=LLMChain(llm=llm, prompt=web_request_template))
 if prompt:
-    title = title_chain.run(destination=prompt)
-    wiki_research = wiki.run(prompt)
-    script = script_chain.run(script=title,
-                              wikipedia_research=wiki_research)
-    st.write(title)
+    # title = title_chain.run(destination=prompt)
+    # wiki_research = wiki.run(prompt)
+    # script = script_chain.run(script=title,
+    #                           wikipedia_research=wiki_research)
+    question = "What are the Three (3) biggest countries, and their respective sizes?"
+    inputs = {
+        "query": prompt ,
+        "url": "http://localhost:3001/posts/" + prompt.replace(" ", "+")
+    }
+    web_result = web_request_chain(inputs)
+    # st.write(title)
+    st.write(web_result)
     # st.write(script)
     # st.write(wiki_research)
