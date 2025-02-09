@@ -5,4 +5,5 @@ ollama contains llama2
 
 cd web
 python main.py
-python with_ui.py
+
+streamlit run with_ui.py
