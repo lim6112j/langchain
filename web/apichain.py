@@ -1,19 +1,16 @@
-from langchain_ollama import OllamaLLM
-import streamlit as st
-from langchain.chains import APIChain
-from langchain.chains.api import open_meteo_docs
-llm = OllamaLLM(model="llama2")
-chain = APIChain.from_llm_and_api_docs(
-    llm,
-    open_meteo_docs.OPEN_METEO_DOCS,
-    verbose=True,
-    limit_to_domains=["https://api.open-meteo.com/"]
+import os
+# import streamlit as st
+# from langchain_community.utilities import OpenWeatherMapAPIWrapper
+from langchain.agents import AgentType, initialize_agent, load_tools
+from langchain_openai import OpenAI
+os.environ["OPENAI_API_KEY"] = ""
+os.environ["OPENWEATHERMAP_API_KEY"] = ""
+# weather = OpenWeatherMapAPIWrapper()
+# weatherData = weather.run("London,GB")
+# print(weatherData)
+llm = OpenAI(temperature=0)
+tools = load_tools(["openweathermap-api"], llm)
+agent_chain = initialize_agent(
+    tools=tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True
 )
-print(open_meteo_docs.OPEN_METEO_DOCS[:500])
-st.title("Ciel AI Agent")
-prompt = st.text_input('plug in your prompt here')
-if prompt:
-    result = chain.run(
-        "What is the weather like right now in Munich, Germany in degrees Fahrenheit?"
-        )
-    st.write(result)
+agent_chain.run("What's the weather like in London?")
