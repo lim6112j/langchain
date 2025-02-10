@@ -10,6 +10,7 @@ from langchain.tools import tool
 from langchain.chains import LLMChain, LLMRequestsChain
 from langchain_core.prompts import PromptTemplate
 
+
 @tool
 def multiply(a: int, b: int) -> int:
     """multiply two numbers"""
@@ -46,7 +47,7 @@ script_template = PromptTemplate(
       while leveraging this wikipedia research:{wikipedia_research}"""
 )
 
-web_request = """Between >>> and <<< are the raw response text from localhost.
+web_request = """Between >>> and <<< are the raw response text from localhost:3001/posts/'{query}'.
 Extract the title or say "not found" if the information is not contained.
 Use the format
 Extracted:<title or "not found">
@@ -54,7 +55,7 @@ Extracted:<title or "not found">
 Extracted:"""
 web_request_template = PromptTemplate(
     input_variable=["query", "requests_result"],
-    template = web_request
+    template=web_request
 )
 llm = OllamaLLM(model="llama2")
 title_chain = LLMChain(llm=llm, prompt=title_template,
@@ -62,7 +63,8 @@ title_chain = LLMChain(llm=llm, prompt=title_template,
 script_chain = LLMChain(llm=llm, prompt=script_template,
                         verbose=True, output_key='script')
 wiki = WikipediaAPIWrapper()
-web_request_chain = LLMRequestsChain(llm_chain=LLMChain(llm=llm, prompt=web_request_template))
+web_request_chain = LLMRequestsChain(
+    llm_chain=LLMChain(llm=llm, prompt=web_request_template))
 if prompt:
     # title = title_chain.run(destination=prompt)
     # wiki_research = wiki.run(prompt)
@@ -70,7 +72,7 @@ if prompt:
     #                           wikipedia_research=wiki_research)
     question = "What are the Three (3) biggest countries, and their respective sizes?"
     inputs = {
-        "query": prompt ,
+        "query": prompt,
         "url": "http://localhost:3001/posts/" + prompt.replace(" ", "+")
     }
     web_result = web_request_chain(inputs)
