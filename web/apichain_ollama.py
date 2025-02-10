@@ -1,7 +1,8 @@
 import os
 from langchain_ollama import OllamaLLM
 from langchain.agents import AgentType, initialize_agent, load_tools
-os.environ["OPENWEATHERMAP_API_KEY"] = ""
+from dotenv import load_dotenv
+load_dotenv()
 llm = OllamaLLM(model="llama2")
 tools = load_tools(["openweathermap-api"])
 agent_chain = initialize_agent(

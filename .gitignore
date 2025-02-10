@@ -1,2 +1,3 @@
 web/.venv
 web/webserver/node_modules
+web/.env

@@ -3,8 +3,8 @@ import os
 # from langchain_community.utilities import OpenWeatherMapAPIWrapper
 from langchain.agents import AgentType, initialize_agent, load_tools
 from langchain_openai import OpenAI
-os.environ["OPENAI_API_KEY"] = ""
-os.environ["OPENWEATHERMAP_API_KEY"] = ""
+from dotenv import load_dotenv
+load_dotenv()
 # weather = OpenWeatherMapAPIWrapper()
 # weatherData = weather.run("London,GB")
 # print(weatherData)
