@@ -20,4 +20,4 @@ agent = initialize_agent(
     agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
     verbose=True
 )
-agent.run("show the json data of two locations in seoul, locations are start 127.919323,36.809656, destination 128.080629,36.699223")
+agent.run("send the json data of two locations in seoul, locations are start 127.919323,36.809656, destination 128.080629,36.699223")

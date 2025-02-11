@@ -73,4 +73,4 @@ class CielApiWrapper(BaseModel):
     def send_response(self, text: str) -> str:
         """ Send a response back to the caller. """
         # Here you can implement logic to handle and respond to the request.
-        return "send str successfully"
+        return f"send str successfully : {text}"
