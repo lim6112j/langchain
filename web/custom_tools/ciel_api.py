@@ -59,10 +59,13 @@ class CielApiWrapper(BaseModel):
 
     def get_routes(self, text: str) -> str:
         """ Get route information from the API. """
+        import json
+        params = json.loads(text)
+        fields = dict(params)
         OSRM_API = os.getenv("OSRM_API")
         # http://localhost:5001/route/v1/driving/127.919323,36.809656;128.080629,36.699223?steps=true
-        conn = http.client.HTTPConnection(OSRM_API)
-        routes = conn.request("GET", text + "?steps=true")
+        conn = http.client.HTTPConnection(OSRM_API, 5001)
+        routes = conn.request("GET", "/route/v1/driving/" + fields["locations"] + "?steps=true")
         if not routes:
             return "No routes found."
         # response = "\n".join([f"{route['id']}: {route['title']}" for route in routes])
