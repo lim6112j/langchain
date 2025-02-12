@@ -2,4 +2,4 @@ web/.venv
 web/webserver/node_modules
 web/.env
 web/custom_tools/__pycache__/
-web/langgraph/output.png
+/**/*.png
