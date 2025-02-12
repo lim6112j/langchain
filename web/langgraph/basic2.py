@@ -90,6 +90,7 @@ def stream_graph_updates(user_input: str):
             {"messages": [{"role": "user", "content": user_input}]},
             config,
             ):
+        #print (event)
         for value in event.values():
             print("Assistant:", value["messages"][-1].content)
 while True:
