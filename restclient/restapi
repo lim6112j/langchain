@@ -1,13 +1,13 @@
 :host = localhost:11434
 
 :jType = application/json
- # api demand data
+ # check api running
 GET http://:host
-# ollama api - not working
+# ollama api 
 POST https://:host/api/chat
 content-type: :jType
 {
-  "model": "llama2",
+  "model": "llama3.2",
   "messages": [
     {
       "role": "user",
@@ -22,11 +22,11 @@ content-type: :jType
 POST https://:host/api/chat
 content-type: :jType
 {
-  "model": "llama2",
+  "model": "llama3.2",
   "messages": [
     {
       "role": "user",
-      "content": "What is the value of pi ?"
+      "content": "What is the weather for Seoul ?"
     }
   ],
   "stream": false,
