@@ -70,7 +70,11 @@ graph_builder.add_conditional_edges(
 )
 graph_builder.add_edge("tools", "chatbot")
 graph_builder.add_edge(START, "chatbot")
-graph = graph_builder.compile()
+
+from langgraph.checkpoint.memory import MemorySaver
+memory = MemorySaver()
+
+graph = graph_builder.compile(checkpointer=memory)
 from PIL import Image
 try:
     d = graph.get_graph().draw_mermaid_png()
@@ -80,8 +84,12 @@ try:
 except Exception:
     # This requires some extra dependencies and is optional
     print(f"image exception:{Exception.with_traceback()}")
+config = {"configurable": {"thread_id": "1"}}
 def stream_graph_updates(user_input: str):
-    for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
+    for event in graph.stream(
+            {"messages": [{"role": "user", "content": user_input}]},
+            config,
+            ):
         for value in event.values():
             print("Assistant:", value["messages"][-1].content)
 while True:
