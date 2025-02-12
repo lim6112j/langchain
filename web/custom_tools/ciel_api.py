@@ -41,10 +41,15 @@ class CielApiWrapper(BaseModel):
     @root_validator(skip_on_failure=True)
     def validate_environment(cls, values: Dict) -> Dict:
         """ Validate that api key and python package exists in environmewnt. """
-        # bot_token = get_from_dict_or_env(values, "bot_token", "SLACK_BOT_TOKEN")
-        # try:
-        #     from slack_sdk import WebClient
-        # except ImportError
+        openai_api_key = get_from_dict_or_env(values, "openai_api_key", "OPENAI_API_KEY")
+        try:
+            #from ciel_sdk import WebClient
+            print(f"Validation values : {values['endpoint']}")
+        except ImportError:
+            raise ImportError(
+                "ciel_sdk is not installed."
+                "Please install it with `pip install ciel-sdk`"
+            )
         return values
 
     def run(self, mode: str, text: Optional[str]) -> str:
